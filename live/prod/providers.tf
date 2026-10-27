@@ -10,7 +10,7 @@ provider "aws" {
       Environment = var.environment
       Owner       = var.owner
       ManagedBy   = "terraform"
-      Repository  = var.github_repository
+      Repository  = "${var.github_owner}/${var.github_repo}"
     }
   }
 }

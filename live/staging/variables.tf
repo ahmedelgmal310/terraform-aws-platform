@@ -38,10 +38,16 @@ variable "allowed_account_ids" {
   default     = []
 }
 
-variable "github_repository" {
-  description = "owner/name of the repository whose workflows may deploy this environment."
+variable "github_owner" {
+  description = "GitHub organisation or user that owns the deploying repository."
   type        = string
-  default     = "ahmedelgmal310/terraform-aws-platform"
+  default     = "ahmedelgmal310"
+}
+
+variable "github_repo" {
+  description = "Name of the repository whose workflows may deploy this environment."
+  type        = string
+  default     = "terraform-aws-platform"
 }
 
 variable "vpc_cidr" {

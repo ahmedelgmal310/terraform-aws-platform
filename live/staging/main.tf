@@ -97,7 +97,7 @@ module "deploy_role" {
   source = "../../modules/iam-github-oidc"
 
   role_name = "${local.name}-github-deploy"
-  subjects  = ["repo:${var.github_repository}:environment:${var.environment}"]
+  subjects  = ["repo:${var.github_owner}/${var.github_repo}:environment:${var.environment}"]
 
   policy_statements = [
     {

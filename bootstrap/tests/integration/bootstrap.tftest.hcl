@@ -47,8 +47,13 @@ run "read_back_from_api" {
   }
 
   assert {
-    condition     = output.bucket_versioning == "Enabled"
-    error_message = "State bucket versioning is not enabled."
+    condition     = output.bucket_arn == "arn:aws:s3:::it-platform-tfstate-000000000000"
+    error_message = "State bucket is not visible through the S3 API."
+  }
+
+  assert {
+    condition     = output.table_hash_key == "LockID" && output.table_pitr_enabled
+    error_message = "Lock table read from DynamoDB has the wrong key or no point-in-time recovery."
   }
 
   assert {
