@@ -41,7 +41,8 @@ data "aws_vpc_security_group_rules" "default" {
 }
 
 data "aws_vpc_security_group_rule" "default" {
-  for_each               = toset(data.aws_vpc_security_group_rules.default.ids)
+  # The API returns no IDs (null) once every rule has been revoked.
+  for_each               = toset(coalesce(data.aws_vpc_security_group_rules.default.ids, []))
   security_group_rule_id = each.value
 }
 
