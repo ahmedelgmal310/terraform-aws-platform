@@ -1,0 +1,29 @@
+# Checkov static scan of all Terraform in the repository.
+# Every skipped check is listed with the reason it does not apply or where the
+# control is enforced instead. Nothing is soft-failed.
+framework:
+  - terraform
+compact: true
+quiet: true
+download-external-modules: false
+skip-path:
+  - \.terraform
+  - tests/integration/verify
+  # Deliberately insecure plan fixture for the policy-negative CI job.
+  - tests/policy-fixtures
+skip-check:
+  # Log retention is an environment decision (30 days in dev). The OPA policy
+  # policies/terraform/sizing.rego requires >= 365 days in prod.
+  - CKV_AWS_338
+  # Cross-region replication doubles storage cost; the buckets here hold
+  # rebuildable artifacts and logs. Revisit for regulated data.
+  - CKV_AWS_144
+  # S3 event notifications are a feature, not a security control.
+  - CKV2_AWS_62
+  # Access logging is wired in live/* (artifacts -> access-logs bucket). The
+  # log destination bucket itself cannot log to itself.
+  - CKV_AWS_18
+  # Multi-AZ is an input; prod enables it and sizing.rego enforces it there.
+  - CKV_AWS_157
+  # The Elastic IPs belong to NAT gateways, not EC2 instances.
+  - CKV2_AWS_19

@@ -1,0 +1,15 @@
+aws_s3_bucket.public: S3 bucket has no public access block
+aws_s3_bucket_acl.public: public canned ACL
+aws_s3_bucket.public: S3 bucket must use SSE-KMS
+aws_s3_bucket.public: S3 bucket must have versioning enabled
+aws_vpc_security_group_ingress_rule.ssh_world: port 22 must not be open to the internet
+aws_db_instance.oversized: RDS storage must be encrypted
+aws_db_instance.oversized: RDS instance must not be publicly accessible
+aws_db_instance.oversized: instance class db.r7g.4xlarge is not allowed in dev
+aws_db_instance.oversized: dev requires a backup retention of at least 1 days
+aws_iam_role_policy.admin: statement "" allows wildcard action "*"
+aws_iam_role.github_any_repo: GitHub OIDC trust must pin the aud claim
+aws_iam_role.github_any_repo: GitHub OIDC subject "repo:*" is too broad
+aws_kms_key.no_rotation: KMS key rotation must be enabled
+aws_cloudwatch_log_group.plaintext: CloudWatch log group must be encrypted with KMS
+aws_vpc.this: missing required tags ["Owner"]

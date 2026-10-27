@@ -1,0 +1,21 @@
+version: 2
+updates:
+  - package-ecosystem: terraform
+    directories:
+      - /live/*
+      - /bootstrap
+      - /modules/*
+      - /tests/policy-fixtures/*
+    schedule:
+      interval: weekly
+    groups:
+      terraform-providers:
+        patterns: ["*"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]

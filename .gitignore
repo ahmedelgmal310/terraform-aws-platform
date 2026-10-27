@@ -1,0 +1,32 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
+plan.json
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+backend.hcl
+.terraformrc
+terraform.rc
+
+# Tooling output
+.bin/
+test.log
+conftest.log
+opa.log
+plan.txt
+*.sarif
+results/
+
+# Local editor / agent state
+.omc/
+.impeccable/
+.idea/
+.vscode/
+.DS_Store
