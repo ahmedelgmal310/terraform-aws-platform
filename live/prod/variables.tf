@@ -26,6 +26,12 @@ variable "region" {
   default     = "eu-west-1"
 }
 
+variable "az_suffixes" {
+  description = "Availability zone letters used in the region (three by default)."
+  type        = list(string)
+  default     = ["a", "b", "c"]
+}
+
 variable "allowed_account_ids" {
   description = "AWS account IDs this environment may be applied to. Empty disables the check (CI plans against LocalStack)."
   type        = list(string)

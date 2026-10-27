@@ -88,7 +88,8 @@ RDS is not part of LocalStack Community, so this module is **not applied in CI**
 | max\_allocated\_storage | Upper limit for storage autoscaling in GiB. Set equal to allocated\_storage to disable autoscaling. | `number` | `100` | no |
 | monitoring\_interval | Enhanced Monitoring interval in seconds (0 disables it). | `number` | `60` | no |
 | multi\_az | Run a synchronous standby in a second AZ. | `bool` | `false` | no |
-| performance\_insights\_retention\_days | Performance Insights retention: 7 (free tier) or a multiple of 31 up to 731. 0 disables Performance Insights. | `number` | `7` | no |
+| performance\_insights\_enabled | Enable Performance Insights (encrypted with the module KMS key). | `bool` | `true` | no |
+| performance\_insights\_retention\_days | Performance Insights retention: 7 (free tier) or a multiple of 31 up to 731. | `number` | `7` | no |
 | skip\_final\_snapshot | Skip the final snapshot on deletion. Only for throwaway environments. | `bool` | `false` | no |
 | tags | Tags added to every resource. | `map(string)` | `{}` | no |
 

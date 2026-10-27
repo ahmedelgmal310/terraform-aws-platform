@@ -189,9 +189,9 @@ resource "aws_db_instance" "this" {
   apply_immediately               = var.apply_immediately
   enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
 
-  performance_insights_enabled          = var.performance_insights_retention_days > 0
-  performance_insights_kms_key_id       = var.performance_insights_retention_days > 0 ? local.kms_key_arn : null
-  performance_insights_retention_period = var.performance_insights_retention_days > 0 ? var.performance_insights_retention_days : null
+  performance_insights_enabled          = var.performance_insights_enabled
+  performance_insights_kms_key_id       = var.performance_insights_enabled ? local.kms_key_arn : null
+  performance_insights_retention_period = var.performance_insights_enabled ? var.performance_insights_retention_days : null
 
   monitoring_interval = var.monitoring_interval
   monitoring_role_arn = var.monitoring_interval > 0 ? aws_iam_role.monitoring[0].arn : null

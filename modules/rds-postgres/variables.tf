@@ -157,14 +157,20 @@ variable "skip_final_snapshot" {
   default     = false
 }
 
+variable "performance_insights_enabled" {
+  description = "Enable Performance Insights (encrypted with the module KMS key)."
+  type        = bool
+  default     = true
+}
+
 variable "performance_insights_retention_days" {
-  description = "Performance Insights retention: 7 (free tier) or a multiple of 31 up to 731. 0 disables Performance Insights."
+  description = "Performance Insights retention: 7 (free tier) or a multiple of 31 up to 731."
   type        = number
   default     = 7
 
   validation {
-    condition     = var.performance_insights_retention_days == 0 || var.performance_insights_retention_days == 7 || (var.performance_insights_retention_days % 31 == 0 && var.performance_insights_retention_days <= 731)
-    error_message = "performance_insights_retention_days must be 0, 7, or a multiple of 31 up to 731."
+    condition     = var.performance_insights_retention_days == 7 || (var.performance_insights_retention_days % 31 == 0 && var.performance_insights_retention_days <= 731)
+    error_message = "performance_insights_retention_days must be 7 or a multiple of 31 up to 731."
   }
 }
 

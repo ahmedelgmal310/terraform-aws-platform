@@ -132,8 +132,8 @@ run "monitoring_disabled" {
   command = plan
 
   variables {
-    monitoring_interval                 = 0
-    performance_insights_retention_days = 0
+    monitoring_interval          = 0
+    performance_insights_enabled = false
   }
 
   assert {

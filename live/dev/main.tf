@@ -4,20 +4,12 @@
 data "aws_caller_identity" "current" {}
 data "aws_partition" "current" {}
 
-data "aws_availability_zones" "available" {
-  state = "available"
-
-  filter {
-    name   = "opt-in-status"
-    values = ["opt-in-not-required"]
-  }
-}
-
 locals {
   name       = "${var.project}-${var.environment}"
   account_id = data.aws_caller_identity.current.account_id
   partition  = data.aws_partition.current.partition
-  azs        = slice(sort(data.aws_availability_zones.available.names), 0, 3)
+  # Explicit AZs: the subnet layout must not change when AWS adds a zone.
+  azs = [for suffix in var.az_suffixes : "${var.region}${suffix}"]
 
   artifacts_bucket = "${local.name}-artifacts-${local.account_id}"
   logs_bucket      = "${local.name}-access-logs-${local.account_id}"

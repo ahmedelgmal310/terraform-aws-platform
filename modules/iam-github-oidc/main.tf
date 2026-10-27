@@ -19,8 +19,8 @@ locals {
       Action    = "sts:AssumeRoleWithWebIdentity"
       Principal = { Federated = local.oidc_provider_arn }
       Condition = {
-        StringEquals = { "${local.github_oidc_host}:aud" = "sts.amazonaws.com" }
-        StringLike   = { "${local.github_oidc_host}:sub" = var.subjects }
+        StringEquals = { "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com" }
+        StringLike   = { "token.actions.githubusercontent.com:sub" = var.subjects }
       }
     }]
   }
