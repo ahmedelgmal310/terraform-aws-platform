@@ -68,6 +68,11 @@ resource "aws_iam_openid_connect_provider" "github" {
 }
 
 resource "aws_iam_role" "this" {
+  # CKV_AWS_393 cannot resolve list inputs passed through a module call and
+  # sees the sub claim as "None". The same control is enforced on resolved
+  # values by the subjects validation, by policies/terraform/iam.rego on
+  # every environment plan, and by the LocalStack read-back test.
+  #checkov:skip=CKV_AWS_393:Static scanner cannot resolve var.subjects; enforced by validation and OPA on the plan
   name                 = var.role_name
   description          = "Assumed by GitHub Actions via OIDC (${join(", ", var.subjects)})"
   assume_role_policy   = jsonencode(local.trust_policy)

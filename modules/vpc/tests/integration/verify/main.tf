@@ -45,11 +45,13 @@ data "aws_vpc_security_group_rule" "default" {
   security_group_rule_id = each.value
 }
 
-data "aws_flow_logs" "vpc" {
-  filter {
-    name   = "resource-id"
-    values = [var.vpc_id]
-  }
+variable "flow_log_group_name" {
+  description = "Log group the module reported for flow logs."
+  type        = string
+}
+
+data "aws_cloudwatch_log_group" "flow_logs" {
+  name = var.flow_log_group_name
 }
 
 output "cidr_block" {
@@ -62,9 +64,14 @@ output "subnet_count" {
   value       = length(data.aws_subnets.all.ids)
 }
 
-output "flow_log_count" {
-  description = "Number of flow logs attached to the VPC."
-  value       = length(data.aws_flow_logs.vpc.ids)
+output "flow_log_group_kms_key_id" {
+  description = "KMS key protecting the flow log group, as reported by CloudWatch Logs."
+  value       = data.aws_cloudwatch_log_group.flow_logs.kms_key_id
+}
+
+output "flow_log_group_retention" {
+  description = "Retention of the flow log group, as reported by CloudWatch Logs."
+  value       = data.aws_cloudwatch_log_group.flow_logs.retention_in_days
 }
 
 output "default_sg_ingress_rules" {

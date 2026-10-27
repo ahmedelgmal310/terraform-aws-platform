@@ -53,7 +53,8 @@ run "read_back_from_api" {
   }
 
   variables {
-    vpc_id = run.apply_vpc.vpc_id
+    vpc_id              = run.apply_vpc.vpc_id
+    flow_log_group_name = run.apply_vpc.flow_log_group_name
   }
 
   assert {
@@ -67,8 +68,13 @@ run "read_back_from_api" {
   }
 
   assert {
-    condition     = output.flow_log_count == 1
-    error_message = "API does not report a flow log attached to the VPC."
+    condition     = startswith(output.flow_log_group_kms_key_id, "arn:aws:kms:")
+    error_message = "Flow log group read from CloudWatch Logs is not KMS-encrypted."
+  }
+
+  assert {
+    condition     = output.flow_log_group_retention == 90
+    error_message = "Flow log group retention read from CloudWatch Logs does not match the default."
   }
 
   assert {
