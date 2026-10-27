@@ -17,11 +17,11 @@ mock_provider "aws" {
 }
 
 variables {
-  identifier                 = "unit-db"
-  instance_class             = "db.t4g.micro"
-  vpc_id                     = "vpc-0123456789abcdef0"
-  subnet_ids                 = ["subnet-0aaaaaaaaaaaaaaaa", "subnet-0bbbbbbbbbbbbbbbb", "subnet-0cccccccccccccccc"]
-  allowed_security_group_ids = ["sg-0123456789abcdef0"]
+  identifier              = "unit-db"
+  instance_class          = "db.t4g.micro"
+  vpc_id                  = "vpc-0123456789abcdef0"
+  subnet_ids              = ["subnet-0aaaaaaaaaaaaaaaa", "subnet-0bbbbbbbbbbbbbbbb", "subnet-0cccccccccccccccc"]
+  allowed_security_groups = { app = "sg-0123456789abcdef0" }
 }
 
 run "encrypted_private_and_backed_up" {
@@ -96,7 +96,7 @@ run "network_access_is_scoped" {
   }
 
   assert {
-    condition     = aws_vpc_security_group_ingress_rule.from_security_groups["sg-0123456789abcdef0"].from_port == 5432 && aws_vpc_security_group_ingress_rule.from_security_groups["sg-0123456789abcdef0"].to_port == 5432
+    condition     = aws_vpc_security_group_ingress_rule.from_security_groups["app"].from_port == 5432 && aws_vpc_security_group_ingress_rule.from_security_groups["app"].to_port == 5432
     error_message = "Ingress must be limited to the PostgreSQL port."
   }
 }

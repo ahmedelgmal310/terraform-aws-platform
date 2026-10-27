@@ -228,10 +228,10 @@ resource "aws_security_group" "this" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "app" {
-  for_each = toset(var.allowed_ingress_security_group_ids)
+  for_each = var.allowed_ingress_security_groups
 
   security_group_id            = aws_security_group.this.id
-  description                  = "App traffic from ${each.value}"
+  description                  = "App traffic from ${each.key}"
   ip_protocol                  = "tcp"
   from_port                    = var.container_port
   to_port                      = var.container_port
@@ -252,7 +252,7 @@ resource "aws_vpc_security_group_egress_rule" "https" {
 }
 
 resource "aws_vpc_security_group_egress_rule" "extra" {
-  for_each = { for r in var.egress_rules : "${r.security_group_id}-${r.port}" => r }
+  for_each = var.egress_rules
 
   security_group_id            = aws_security_group.this.id
   description                  = each.value.description

@@ -135,6 +135,27 @@ run "ecr_pull_scoped_to_repositories" {
   }
 }
 
+run "ingress_and_egress_rules" {
+  command = plan
+
+  variables {
+    allowed_ingress_security_groups = { alb = "sg-0aaaaaaaaaaaaaaaa" }
+    egress_rules = {
+      postgres = { description = "PostgreSQL", port = 5432, security_group_id = "sg-0bbbbbbbbbbbbbbbb" }
+    }
+  }
+
+  assert {
+    condition     = aws_vpc_security_group_ingress_rule.app["alb"].from_port == 8080 && aws_vpc_security_group_ingress_rule.app["alb"].referenced_security_group_id == "sg-0aaaaaaaaaaaaaaaa"
+    error_message = "Ingress must be limited to the container port from the given security group."
+  }
+
+  assert {
+    condition     = aws_vpc_security_group_egress_rule.extra["postgres"].to_port == 5432
+    error_message = "Extra egress rules must be keyed by their static name."
+  }
+}
+
 run "spot_capacity" {
   command = plan
 

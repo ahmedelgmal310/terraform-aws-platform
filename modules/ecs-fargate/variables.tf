@@ -163,20 +163,20 @@ variable "ecr_repository_arns" {
   }
 }
 
-variable "allowed_ingress_security_group_ids" {
-  description = "Security groups (for example a load balancer) allowed to reach the container port."
-  type        = list(string)
-  default     = []
+variable "allowed_ingress_security_groups" {
+  description = "Security groups (for example a load balancer) allowed to reach the container port, keyed by a static name so the keys are known at plan time."
+  type        = map(string)
+  default     = {}
 }
 
 variable "egress_rules" {
-  description = "Additional egress to security groups inside the VPC, such as a database. HTTPS egress to the internet (image pulls, AWS APIs) is always allowed."
-  type = list(object({
+  description = "Additional egress to security groups inside the VPC, such as a database, keyed by a static name. HTTPS egress to the internet (image pulls, AWS APIs) is always allowed."
+  type = map(object({
     description       = string
     port              = number
     security_group_id = string
   }))
-  default = []
+  default = {}
 }
 
 variable "log_retention_days" {

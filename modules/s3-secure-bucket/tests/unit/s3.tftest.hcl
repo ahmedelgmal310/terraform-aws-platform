@@ -108,7 +108,7 @@ run "access_logging_and_extra_statements" {
   command = plan
 
   variables {
-    access_log_bucket = "unit-test-log-bucket"
+    access_logging = { bucket = "unit-test-log-bucket" }
     additional_policy_statements = [{
       Sid       = "AllowReadFromRole"
       Effect    = "Allow"

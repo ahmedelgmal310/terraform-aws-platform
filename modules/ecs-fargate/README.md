@@ -84,14 +84,14 @@ See [`examples/complete`](examples/complete).
 | name | Name of the cluster and service (for example `acme-dev-api`). | `string` | n/a | yes |
 | subnet\_ids | Private subnets the tasks run in. Tasks never get a public IP. | `list(string)` | n/a | yes |
 | vpc\_id | VPC of the service security group. | `string` | n/a | yes |
-| allowed\_ingress\_security\_group\_ids | Security groups (for example a load balancer) allowed to reach the container port. | `list(string)` | `[]` | no |
+| allowed\_ingress\_security\_groups | Security groups (for example a load balancer) allowed to reach the container port, keyed by a static name so the keys are known at plan time. | `map(string)` | `{}` | no |
 | container\_port | Port the container listens on. | `number` | `8080` | no |
 | cpu | Task CPU units (256, 512, 1024, 2048, 4096, 8192 or 16384). | `number` | `256` | no |
 | cpu\_architecture | CPU architecture of the image: ARM64 (Graviton, cheaper) or X86\_64. | `string` | `"ARM64"` | no |
 | cpu\_target\_utilization | Average CPU utilisation (percent) that target tracking aims for. | `number` | `60` | no |
 | desired\_count | Initial number of tasks. Autoscaling owns the value afterwards. | `number` | `1` | no |
 | ecr\_repository\_arns | Private ECR repositories the task execution role may pull from. Leave empty for public images. | `list(string)` | `[]` | no |
-| egress\_rules | Additional egress to security groups inside the VPC, such as a database. HTTPS egress to the internet (image pulls, AWS APIs) is always allowed. | ```list(object({ description = string port = number security_group_id = string }))``` | `[]` | no |
+| egress\_rules | Additional egress to security groups inside the VPC, such as a database, keyed by a static name. HTTPS egress to the internet (image pulls, AWS APIs) is always allowed. | ```map(object({ description = string port = number security_group_id = string }))``` | `{}` | no |
 | environment | Plain-text environment variables for the container. Do not put secrets here; use `secrets`. | `map(string)` | `{}` | no |
 | kms\_key\_arn | KMS key used for the log group. When null a dedicated key with rotation is created. | `string` | `null` | no |
 | log\_retention\_days | Retention of the container log group in days. | `number` | `30` | no |

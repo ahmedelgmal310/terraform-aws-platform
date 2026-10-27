@@ -94,10 +94,10 @@ variable "subnet_ids" {
   }
 }
 
-variable "allowed_security_group_ids" {
-  description = "Security groups allowed to connect on the PostgreSQL port."
-  type        = list(string)
-  default     = []
+variable "allowed_security_groups" {
+  description = "Security groups allowed to connect on the PostgreSQL port, keyed by a static name (for example `app`) so the keys are known at plan time even when the IDs are not."
+  type        = map(string)
+  default     = {}
 }
 
 variable "allowed_cidr_blocks" {

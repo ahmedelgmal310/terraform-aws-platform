@@ -36,8 +36,8 @@ module "access_logs_bucket" {
 module "artifacts_bucket" {
   source = "../../modules/s3-secure-bucket"
 
-  bucket_name       = local.artifacts_bucket
-  access_log_bucket = module.access_logs_bucket.bucket_id
+  bucket_name    = local.artifacts_bucket
+  access_logging = { bucket = module.access_logs_bucket.bucket_id }
 }
 
 module "app" {
@@ -65,28 +65,30 @@ module "app" {
     DB_MASTER_SECRET = module.db.master_user_secret_arn
   }
 
-  egress_rules = [{
-    description       = "PostgreSQL"
-    port              = 5432
-    security_group_id = module.db.security_group_id
-  }]
+  egress_rules = {
+    postgres = {
+      description       = "PostgreSQL"
+      port              = 5432
+      security_group_id = module.db.security_group_id
+    }
+  }
 }
 
 module "db" {
   source = "../../modules/rds-postgres"
 
-  identifier                 = "${local.name}-db"
-  instance_class             = var.db.instance_class
-  allocated_storage          = var.db.allocated_storage
-  max_allocated_storage      = var.db.max_allocated_storage
-  multi_az                   = var.db.multi_az
-  backup_retention_days      = var.db.backup_retention_days
-  deletion_protection        = var.db.deletion_protection
-  skip_final_snapshot        = var.db.skip_final_snapshot
-  monitoring_interval        = var.db.monitoring_interval
-  vpc_id                     = module.vpc.vpc_id
-  subnet_ids                 = module.vpc.intra_subnet_ids
-  allowed_security_group_ids = [module.app.security_group_id]
+  identifier              = "${local.name}-db"
+  instance_class          = var.db.instance_class
+  allocated_storage       = var.db.allocated_storage
+  max_allocated_storage   = var.db.max_allocated_storage
+  multi_az                = var.db.multi_az
+  backup_retention_days   = var.db.backup_retention_days
+  deletion_protection     = var.db.deletion_protection
+  skip_final_snapshot     = var.db.skip_final_snapshot
+  monitoring_interval     = var.db.monitoring_interval
+  vpc_id                  = module.vpc.vpc_id
+  subnet_ids              = module.vpc.intra_subnet_ids
+  allowed_security_groups = { app = module.app.security_group_id }
 
   performance_insights_retention_days = var.db.performance_insights_retention_days
 }

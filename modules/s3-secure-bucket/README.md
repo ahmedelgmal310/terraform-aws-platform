@@ -22,7 +22,7 @@ module "logs" {
 module "artifacts" {
   source            = "../../modules/s3-secure-bucket"
   bucket_name       = "acme-prod-artifacts-111111111111"
-  access_log_bucket = module.logs.bucket_id
+  access_logging = { bucket = module.logs.bucket_id }
 }
 ```
 
@@ -71,8 +71,7 @@ See [`examples/complete`](examples/complete).
 | bucket\_name | Globally unique bucket name. | `string` | n/a | yes |
 | abort\_incomplete\_multipart\_days | Days after which incomplete multipart uploads are aborted. | `number` | `7` | no |
 | accept\_access\_logs | Mark this bucket as an S3 server access log destination: grants the S3 logging service write access for sources in this account. | `bool` | `false` | no |
-| access\_log\_bucket | Name of a bucket that receives server access logs. Null disables access logging (use for the log bucket itself). | `string` | `null` | no |
-| access\_log\_prefix | Key prefix for server access logs. | `string` | `null` | no |
+| access\_logging | Server access logging target. `bucket` may be another module's output: only whether this object is null decides if logging is configured, so the plan stays fully known. Null disables logging (use for the log bucket itself). `prefix` defaults to `s3/<bucket_name>/`. | ```object({ bucket = string prefix = optional(string) })``` | `null` | no |
 | additional\_policy\_statements | Extra IAM policy statements (already decoded objects) merged into the bucket policy after the mandatory TLS and encryption statements. | `list(any)` | `[]` | no |
 | force\_destroy | Allow Terraform to delete the bucket even when it still contains objects. Keep false outside of ephemeral environments. | `bool` | `false` | no |
 | kms\_key\_arn | ARN of an existing KMS key for SSE-KMS. When null a dedicated key with rotation is created. | `string` | `null` | no |

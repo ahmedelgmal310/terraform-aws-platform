@@ -25,8 +25,8 @@ module "access_logs" {
 module "data" {
   source = "../.."
 
-  bucket_name       = "example-data-${data.aws_caller_identity.current.account_id}"
-  access_log_bucket = module.access_logs.bucket_id
+  bucket_name    = "example-data-${data.aws_caller_identity.current.account_id}"
+  access_logging = { bucket = module.access_logs.bucket_id }
 
   tags = {
     Environment = "example"

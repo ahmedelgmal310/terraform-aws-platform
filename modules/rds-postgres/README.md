@@ -21,7 +21,7 @@ module "db" {
   backup_retention_days      = 35
   vpc_id                     = module.vpc.vpc_id
   subnet_ids                 = module.vpc.intra_subnet_ids
-  allowed_security_group_ids = [module.app.security_group_id]
+  allowed_security_groups    = { app = module.app.security_group_id }
 }
 ```
 
@@ -75,7 +75,7 @@ RDS is not part of LocalStack Community, so this module is **not applied in CI**
 | vpc\_id | VPC that hosts the database security group. | `string` | n/a | yes |
 | allocated\_storage | Initial storage in GiB. | `number` | `20` | no |
 | allowed\_cidr\_blocks | CIDR blocks allowed to connect on the PostgreSQL port. Must be private ranges. | `list(string)` | `[]` | no |
-| allowed\_security\_group\_ids | Security groups allowed to connect on the PostgreSQL port. | `list(string)` | `[]` | no |
+| allowed\_security\_groups | Security groups allowed to connect on the PostgreSQL port, keyed by a static name (for example `app`) so the keys are known at plan time even when the IDs are not. | `map(string)` | `{}` | no |
 | apply\_immediately | Apply modifications immediately instead of during the maintenance window. | `bool` | `false` | no |
 | backup\_retention\_days | Automated backup retention in days. | `number` | `7` | no |
 | backup\_window | Daily backup window (UTC), hh24:mi-hh24:mi. | `string` | `"02:00-03:00"` | no |

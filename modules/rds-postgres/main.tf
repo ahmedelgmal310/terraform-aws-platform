@@ -60,10 +60,10 @@ resource "aws_security_group" "this" {
 
 # No egress rules: the database never initiates connections.
 resource "aws_vpc_security_group_ingress_rule" "from_security_groups" {
-  for_each = toset(var.allowed_security_group_ids)
+  for_each = var.allowed_security_groups
 
   security_group_id            = aws_security_group.this.id
-  description                  = "PostgreSQL from ${each.value}"
+  description                  = "PostgreSQL from ${each.key}"
   ip_protocol                  = "tcp"
   from_port                    = local.port
   to_port                      = local.port

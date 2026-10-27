@@ -63,16 +63,13 @@ variable "abort_incomplete_multipart_days" {
   }
 }
 
-variable "access_log_bucket" {
-  description = "Name of a bucket that receives server access logs. Null disables access logging (use for the log bucket itself)."
-  type        = string
-  default     = null
-}
-
-variable "access_log_prefix" {
-  description = "Key prefix for server access logs."
-  type        = string
-  default     = null
+variable "access_logging" {
+  description = "Server access logging target. `bucket` may be another module's output: only whether this object is null decides if logging is configured, so the plan stays fully known. Null disables logging (use for the log bucket itself). `prefix` defaults to `s3/<bucket_name>/`."
+  type = object({
+    bucket = string
+    prefix = optional(string)
+  })
+  default = null
 }
 
 variable "accept_access_logs" {

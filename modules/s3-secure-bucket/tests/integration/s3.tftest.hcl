@@ -31,9 +31,9 @@ run "data_bucket" {
   state_key = "data_bucket"
 
   variables {
-    bucket_name       = "it-platform-data"
-    force_destroy     = true
-    access_log_bucket = run.log_bucket.bucket_id
+    bucket_name    = "it-platform-data"
+    force_destroy  = true
+    access_logging = { bucket = run.log_bucket.bucket_id }
   }
 
   assert {
